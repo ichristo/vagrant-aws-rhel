@@ -1,0 +1,9 @@
+aws:
+  ami				: 'ami-a25415cb'
+  instance_type     : 't1.micro'
+  access_key_id     : 'AKXXXXXXXXXXXXXXX'
+  secret_access_key : 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+  keypair_name      : 'RHEL-OSE-DEMO'
+  security_groups   : [ 'default' ]
+  region			: 'us-east-1'
+  pemfile			: 'MY_PEM_FILE.pem'
