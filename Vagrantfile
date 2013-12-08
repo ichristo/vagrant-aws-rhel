@@ -8,7 +8,7 @@ end
 
 Vagrant.configure("2") do |config|
   config.vm.hostname = "ose-broker"
-  config.vm.box = "aws-basic"
+  config.vm.box = "dummy"
   config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
   config.vm.boot_timeout   = 120
 
