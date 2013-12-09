@@ -60,7 +60,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
                                         }
       end
       
-#      config.vm.provision :shell, :inline => "sudo hostname " % box[:name].to_s
+      config.vm.provision :shell, :inline => "yum -y update &"
 #      config.vm.provision "ansible" do |ansible|
 #        ansible.playbook              = "provisioning/playbook.yml"
 #        ansible.inventory_path        = "provisioning/hosts"

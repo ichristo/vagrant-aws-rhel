@@ -8,4 +8,4 @@ aws:
   security_groups   : [ 'default' ]
   region			: 'us-east-1'
   pemfile			: 'MY_PEM_FILE.pem'
-  user_data			: "#!/bin/bash\necho 'Defaults:ec2-user !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty && chmod 440 /etc/sudoers.d/999-vagrant-cloud-init-requiretty\n"
+  user_data			: "#!/bin/bash\necho 'Defaults:ec2-user !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty && #!/bin/bash\necho 'Defaults:root !requiretty' >> /etc/sudoers.d/999-vagrant-cloud-init-requiretty && chmod 440 /etc/sudoers.d/999-vagrant-cloud-init-requiretty \n"
