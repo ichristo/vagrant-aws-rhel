@@ -38,6 +38,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
       config.vm.box               = "aws-rhel"
       config.vm.hostname          = box[:name]
       config.vm.boot_timeout      = 120
+      config.vm.synced_folder '.', '/vagrant', :disabled => true
       
       config.vm.provider :aws do |aws, override|
         override.ssh.private_key_path = pemfile
@@ -50,7 +51,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         aws.security_groups           = aws_config["security_groups"]
         aws.region                    = aws_config["region"]
         aws.ami                       = aws_config["ami"]
-        aws.instance_ready_timeout    = 60
+        aws.instance_ready_timeout    = 120
         aws.instance_type             = box[:instance_type]
   #      aws.subnet_id                 = aws_config["subnet_id"]
   #      aws.private_ip_address        = box[:ip]
