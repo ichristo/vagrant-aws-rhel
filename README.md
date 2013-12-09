@@ -151,3 +151,10 @@ To ssh into the secondary instances:
 To 'TERMINATE' the EC2 instances:
 
     $ vagrant destroy ose-broker-01 ose-node-01 ose-node-02
+	Are you sure you want to destroy the 'ose-node-02' VM? [y/N] y
+	WARNING: Nokogiri was built against LibXML version 2.8.0, but has dynamically loaded 2.9.1
+	[ose-node-02] Terminating the instance...
+	Are you sure you want to destroy the 'ose-node-01' VM? [y/N] y
+	[ose-node-01] Terminating the instance...
+	Are you sure you want to destroy the 'ose-broker-01' VM? [y/N] y
+	[ose-broker-01] Terminating the instance...
