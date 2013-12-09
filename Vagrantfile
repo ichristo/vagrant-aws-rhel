@@ -25,6 +25,8 @@ Vagrant.configure("2") do |config|
       aws.ami                       = aws_config["ami"]
       aws.instance_ready_timeout    = 60
       aws.instance_type             = aws_config["instance_type"]
+#      aws.subnet_id                 = aws_config["subnet_id"]
+#      aws.private_ip_address        = '192.168.200.101'
       aws.tags                      = {
                                         'Name' => 'ose-broker-01'
                                       }
@@ -50,6 +52,8 @@ Vagrant.configure("2") do |config|
       aws.ami                       = aws_config["ami"]
       aws.instance_ready_timeout    = 120
       aws.instance_type             = aws_config["instance_type"]
+#      aws.subnet_id                 = aws_config["subnet_id"]
+#      aws.private_ip_address        = '192.168.200.121'
       aws.tags                      = {
                                         'Name' => 'ose-node-01'
                                       }
@@ -75,6 +79,8 @@ Vagrant.configure("2") do |config|
       aws.ami                       = aws_config["ami"]
       aws.instance_ready_timeout    = 120
       aws.instance_type             = aws_config["instance_type"]
+#      aws.subnet_id                 = aws_config["subnet_id"]
+#      aws.private_ip_address        = '192.168.200.122'
       aws.tags                      = {
                                         'Name' => 'ose-node-02'
                                       }

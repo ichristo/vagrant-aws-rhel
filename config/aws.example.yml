@@ -1,6 +1,7 @@
 aws:
 #  ami				: 'ami-35792c5c'   #AWS-Linux AMI
   ami				: 'ami-a25415cb'   #RHEL 6 AMI
+  subnet_id			: 'subnet-999999zz'
   instance_type     : 't1.micro'
   access_key_id     : 'AKXXXXXXXXXXXXXXX'
   secret_access_key : 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
