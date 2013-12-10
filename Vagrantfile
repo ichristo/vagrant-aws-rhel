@@ -21,7 +21,7 @@ boxes = [
   },
   { 
     :name           =>  'ose-node-02',
-    :ip             =>   '192.168.200.122',
+    :ip             =>  '192.168.200.122',
     :primary        =>  'false',
     :instance_type  =>  't1.micro'
   },
@@ -36,6 +36,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
   boxes.each do |box|
     config.vm.define box[:name], primary: box[:primary] do |config|
       config.vm.box               = "aws-rhel"
+      config.vm.box_url           = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
       config.vm.hostname          = box[:name]
       config.vm.boot_timeout      = 120
       config.vm.synced_folder '.', '/vagrant', :disabled => true
