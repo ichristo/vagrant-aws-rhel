@@ -9,30 +9,33 @@ end
 boxes = [
   { 
     :name           =>  'ose-broker-01',
-    :ip             =>  '192.168.200.101',
+    :private_ip     =>  '192.168.200.101',
     :primary        =>  'true',
-    :instance_type  =>  't1.micro'
+    :instance_type  =>  't1.micro',
+    :elastic_ip     =>  true
   },
   { 
     :name           =>  'ose-node-01',
-    :ip             =>  '192.168.200.121',
+    :private_ip     =>  '192.168.200.121',
     :primary        =>  'false',
-    :instance_type  =>  't1.micro'
+    :instance_type  =>  't1.micro',
+    :elastic_ip     =>  false
   },
   { 
     :name           =>  'ose-node-02',
-    :ip             =>  '192.168.200.122',
+    :private_ip     =>  '192.168.200.122',
     :primary        =>  'false',
-    :instance_type  =>  't1.micro'
+    :instance_type  =>  't1.micro',
+    :elastic_ip     =>  false
   },
-  
+
 ]
 
-VAGRANT_API_VERSION = "2"
+VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.require_plugin "vagrant-aws"
 
-Vagrant.configure(VAGRANT_API_VERSION) do |config|
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   boxes.each do |box|
     config.vm.define box[:name], primary: box[:primary] do |config|
       config.vm.box               = "aws-rhel"
@@ -54,14 +57,15 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         aws.ami                       = aws_config["ami"]
         aws.instance_ready_timeout    = 120
         aws.instance_type             = box[:instance_type]
-  #      aws.subnet_id                 = aws_config["subnet_id"]
-  #      aws.private_ip_address        = box[:ip]
+#        aws.subnet_id                 = aws_config["subnet_id"]
+#        aws.private_ip_address        = box[:private_ip]
+        aws.elastic_ip                = box[:elastic_ip]
         aws.tags                      = {
                                           'Name' => box[:name]
                                         }
       end
       
-      config.vm.provision :shell, :inline => "yum -y update &"
+      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
 #      config.vm.provision "ansible" do |ansible|
 #        ansible.playbook              = "provisioning/playbook.yml"
 #        ansible.inventory_path        = "provisioning/hosts"
