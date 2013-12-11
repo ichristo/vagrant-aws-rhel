@@ -9,13 +9,15 @@ end
 boxes = [
   { 
     :name           =>  'ose-broker-01',
+    :fqdn           =>  'ose-broker-01.osshive.io',
     :private_ip     =>  '192.168.200.101',
     :primary        =>  'true',
     :instance_type  =>  't1.micro',
-    :elastic_ip     =>  true
+    :elastic_ip     =>  false
   },
   { 
     :name           =>  'ose-node-01',
+    :fqdn           =>  'ose-node-01.osshive.io',
     :private_ip     =>  '192.168.200.121',
     :primary        =>  'false',
     :instance_type  =>  't1.micro',
@@ -23,6 +25,7 @@ boxes = [
   },
   { 
     :name           =>  'ose-node-02',
+    :fqdn           =>  'ose-node-02.osshive.io',
     :private_ip     =>  '192.168.200.122',
     :primary        =>  'false',
     :instance_type  =>  't1.micro',
@@ -38,15 +41,23 @@ Vagrant.require_plugin "vagrant-aws"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   boxes.each do |box|
     config.vm.define box[:name], primary: box[:primary] do |config|
-      config.vm.box               = "aws-rhel"
-      config.vm.box_url           = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
-      config.vm.hostname          = box[:name]
-      config.vm.boot_timeout      = 120
+      config.vm.box                 = "aws-rhel"
+      config.vm.box_url             = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+
+      config.vm.hostname            = box[:name]
+      config.aws_extras.record_zone = "osshive.io."
+      config.aws_extras.record_name = box[:fqdn] 
+      config.aws_extras.record_type = "CNAME"
+      config.aws_extras.record_ttl  = "60"
+      
+
+      config.vm.boot_timeout        = 120
       config.vm.synced_folder '.', '/vagrant', :disabled => true
       
       config.vm.provider :aws do |aws, override|
         override.ssh.private_key_path = pemfile
         override.ssh.username         = "ec2-user"
+        override.ssh.forward_agent    = true
 
         aws.user_data                 = aws_config["user_data"]
         aws.access_key_id             = aws_config["access_key_id"]
@@ -65,7 +76,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                                         }
       end
       
-      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
+#      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
+#      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install ruby unzip curl"
 #      config.vm.provision "ansible" do |ansible|
 #        ansible.playbook              = "provisioning/playbook.yml"
 #        ansible.inventory_path        = "provisioning/hosts"
