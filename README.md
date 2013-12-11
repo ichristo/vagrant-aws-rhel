@@ -20,6 +20,8 @@ https://raw.github.com/mxcl/homebrew/go/install)"
 
 The script explains what it will do and then pauses before it does it. 
 
+
+
 ###Install Brew-Cask
 Yes, "clicking and dragging " an icon via Mac OS DMG-style packages is
 incredible simple.  But what if we could download and install software
@@ -67,9 +69,10 @@ http://files.vagrantup.com/packages/a40522f5fabccb9ddabad03d836e12
     
     
     
-### Install the Vagrant AWS Plugin
+### Install the Vagrant AWS Related Plugins
 Vagrant can be used to manage EC2 and VPC instances via the [vagrant-aws
-plugin](https://github.com/mitchellh/vagrant-aws).  
+plugin](https://github.com/mitchellh/vagrant-aws).  There are also some extra plugins 
+that help in getting additional information and adding some configurations.
 
 After installing this plugin, it will be possible to do the following
 via vagrant:
@@ -88,9 +91,21 @@ To install the Vagrant AWS Plugin, simply do the following:
     Installing the 'vagrant-aws' plugin. This can take a few
      minutes...
     Installed the plugin 'vagrant-aws (0.4.0)'!
+	
+The Vagrant AWS Extras plugin allows you to add A Record entries to Domains managed as part of Amazon's Route53 DNS Service.  
+
+	$ vagrant plugin install vagrant-aws-extras
+	Installing the 'vagrant-aws-extras' plugin. This can take a few minutes...
+	Installed the plugin 'vagrant-aws-extras (0.1.0)'!
+	
+	
 
 ## Creating the AWS Instances
-### Configure AWS Account
+### Configure the Hosted Zone
+In Amazon, make sure to configure the 'Hosted Zone' for the image.  Instructions for getting started are available at [Amazon's Route 53 Documentation Site](http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/R53Example.html)
+
+
+### Configure the AWS Settings
 Copy the aws.example.yml in the config directory to aws.yml.
 Modify the settings with the correct AWS settings:
 
@@ -105,8 +120,15 @@ Modify the settings with the correct AWS settings:
       pemfile: '{YOUR_PEM_FILE}'
       user_data: "#!/bin/bash\necho 'Defaults:ec2-user !requiretty' >
 /etc/sudoers.d/999-vagrant-cloud-init-requiretty && chmod 440
-/etc/sudoers.d/999-vagrant-cloud-init-requiretty\n"   #NECESSARY FOR Red
-Hat flavors of Linux (Amazon, Centos, Fedora, RHEL)
+/etc/sudoers.d/999-vagrant-cloud-init-requiretty\n"   
+
+In the user_data section, we are disabling the 'requiretty' setting for the ec2_user.  This is necessary for Red Hat flavors of Linux (Amazon, Centos, Fedora, RHEL) and without it we'll get the error:
+
+    sudo: sorry, you must have a tty to run sudo
+    
+Disabling the requiretty setting for the ec2-user resolves this error.  If we are using a user for sudo besides the 'ec2-user' then modify the command as necessary.
+
+#### Configure the Vagrant Boxes
 
 In the Vagrantfile, Verify that the hostnames and number of boxes is
 correct.
