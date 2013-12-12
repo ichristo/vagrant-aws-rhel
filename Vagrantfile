@@ -85,7 +85,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.verbose           = false
       end
       
-      config.vm.provision :shell, :privileged => true, :inline => "cp -f /vagrant/etc-setup/etc-resolv-conf /etc/resolv.conf"
+      config.vm.provision :shell, :privileged => false, :inline => "sudo cp -f /vagrant/etc-setup/etc-resolv-conf /etc/resolv.conf"
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/config /home/ec2-user/.ssh/"
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/RHEL-OSE-DEMO.pem /home/ec2-user/.ssh/"
       config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
