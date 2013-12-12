@@ -1,11 +1,11 @@
 aws:
 #  ami				: 'ami-35792c5c'   #AWS-Linux AMI
-  ami				: 'ami-a25415cb'   #RHEL 6 AMI
-  subnet_id			: 'subnet-999999zz'
+  ami               : 'ami-a25415cb'   #RHEL 6 AMI
+  subnet_id         : 'subnet-999999zz'
   access_key_id     : 'AKXXXXXXXXXXXXXXX'
   secret_access_key : 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
   keypair_name      : 'RHEL-OSE-DEMO'
   security_groups   : [ 'default' ]
-  region			: 'us-east-1'
-  pemfile			: 'MY_PEM_FILE.pem'
-  user_data			: "#!/bin/bash\necho 'Defaults:ec2-user !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty && #!/bin/bash\necho 'Defaults:root !requiretty' >> /etc/sudoers.d/999-vagrant-cloud-init-requiretty && chmod 440 /etc/sudoers.d/999-vagrant-cloud-init-requiretty \n"
+  region            : 'us-east-1'
+  pemfile           : 'MY_PEM_FILE.pem'
+  user_data         : "#!/bin/bash\necho 'Defaults:ec2-user !requiretty' > /etc/sudoers.d/999-vagrant-cloud-init-requiretty && #!/bin/bash\necho 'Defaults:root !requiretty' >> /etc/sudoers.d/999-vagrant-cloud-init-requiretty && chmod 440 /etc/sudoers.d/999-vagrant-cloud-init-requiretty \n"
