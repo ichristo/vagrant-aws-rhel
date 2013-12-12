@@ -88,9 +88,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.vm.provision :shell, :privileged => true, :inline => "cp -f /vagrant/etc-setup/etc-resolv-conf /etc/resolv.conf"
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/config /home/ec2-user/.ssh/"
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/RHEL-OSE-DEMO.pem /home/ec2-user/.ssh/"
+      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
+      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install ruby unzip curl"
+
 #      config.vm.provision :shell, :privileged => true, :inline => "echo 'domain osshive.io\nsearch osshive.io ec2.internal\nnameserver 205.251.197.143\nnameserver 172.16.0.23\n' > /etc/resolv.conf"
-#      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
-#      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install ruby unzip curl"
 #      config.vm.provision "ansible" do |ansible|
 #        ansible.playbook              = "provisioning/playbook.yml"
 #        ansible.inventory_path        = "provisioning/hosts"

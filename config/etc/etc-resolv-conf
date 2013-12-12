@@ -1,5 +1,8 @@
 domain osshive.io
 search osshive.io ec2.internal
+#Google Names Servers
+nameserver 8.8.8.8
+nameserver 8.8.4.4
 #AWS Route53 NameServers
 nameserver 205.251.197.143
 nameserver 205.251.193.124
