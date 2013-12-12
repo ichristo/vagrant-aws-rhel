@@ -45,14 +45,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.vm.box_url             = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
 
       config.vm.hostname            = box[:name]
-      config.aws_extras.record_zone = "osshive.io."
-      config.aws_extras.record_name = box[:fqdn] 
-      config.aws_extras.record_type = "CNAME"
-      config.aws_extras.record_ttl  = "60"
       
 
       config.vm.boot_timeout        = 120
       config.vm.synced_folder '.', '/vagrant', :disabled => true
+      config.vm.synced_folder 'config/ssh', '/vagrant/ssh-setup/'
       
       config.vm.provider :aws do |aws, override|
         override.ssh.private_key_path = pemfile
@@ -71,11 +68,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #        aws.subnet_id                 = aws_config["subnet_id"]
 #        aws.private_ip_address        = box[:private_ip]
         aws.elastic_ip                = box[:elastic_ip]
+
+        override.aws_extras.record_zone = "osshive.io."
+        override.aws_extras.record_name = box[:fqdn] 
+        override.aws_extras.record_type = "CNAME"
+        override.aws_extras.record_ttl  = "60"
+
         aws.tags                      = {
                                           'Name' => box[:name]
                                         }
       end
       
+      config.vm.provision :ansible do |ansible|
+        ansible.playbook          = "ansible/vagrant.yml"
+        #ansible.inventory_file    = "ansible/hosts"
+        ansible.verbose           = false
+      end
+      
+#      config.vm.provision :shell, :privileged => true, :inline => "echo 'domain osshive.io\nsearch osshive.io ec2.internal\nnameserver 205.251.197.143\nnameserver 172.16.0.23\n' > /etc/resolv.conf"
 #      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
 #      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install ruby unzip curl"
 #      config.vm.provision "ansible" do |ansible|

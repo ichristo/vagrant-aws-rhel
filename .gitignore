@@ -1,3 +1,4 @@
 *.pem
 aws.yml
 .vagrant
+config/ssh
