@@ -35,6 +35,7 @@ boxes = [
 ]
 
 VAGRANTFILE_API_VERSION = "2"
+BOX_TIMEOUT             = 180
 
 Vagrant.require_plugin "vagrant-aws"
 
@@ -47,9 +48,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.vm.hostname            = box[:name]
       
 
-      config.vm.boot_timeout        = 120
+      config.vm.boot_timeout        = BOX_TIMEOUT
       config.vm.synced_folder '.', '/vagrant', :disabled => true
       config.vm.synced_folder 'config/ssh', '/vagrant/ssh-setup/'
+      config.vm.synced_folder 'config/etc', '/vagrant/etc-setup/'
       
       config.vm.provider :aws do |aws, override|
         override.ssh.private_key_path = pemfile
@@ -63,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         aws.security_groups           = aws_config["security_groups"]
         aws.region                    = aws_config["region"]
         aws.ami                       = aws_config["ami"]
-        aws.instance_ready_timeout    = 120
+        aws.instance_ready_timeout    = BOX_TIMEOUT
         aws.instance_type             = box[:instance_type]
 #        aws.subnet_id                 = aws_config["subnet_id"]
 #        aws.private_ip_address        = box[:private_ip]
@@ -72,19 +74,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         override.aws_extras.record_zone = "osshive.io."
         override.aws_extras.record_name = box[:fqdn] 
         override.aws_extras.record_type = "CNAME"
-        override.aws_extras.record_ttl  = "60"
+        override.aws_extras.record_ttl  = "120"
 
-        aws.tags                      = {
-                                          'Name' => box[:name]
-                                        }
+        aws.tags = { 'Name' => box[:name] }
       end
       
       config.vm.provision :ansible do |ansible|
-        ansible.playbook          = "ansible/vagrant.yml"
-        #ansible.inventory_file    = "ansible/hosts"
+        ansible.sudo              = true
+        ansible.playbook          = "provisioning/ansible/playbook.yml"
         ansible.verbose           = false
       end
       
+      config.vm.provision :shell, :privileged => true, :inline => "cp -f /vagrant/etc-setup/etc-resolv-conf /etc/resolv.conf"
+      config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/config /home/ec2-user/.ssh/"
+      config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/RHEL-OSE-DEMO.pem /home/ec2-user/.ssh/"
 #      config.vm.provision :shell, :privileged => true, :inline => "echo 'domain osshive.io\nsearch osshive.io ec2.internal\nnameserver 205.251.197.143\nnameserver 172.16.0.23\n' > /etc/resolv.conf"
 #      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
 #      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install ruby unzip curl"

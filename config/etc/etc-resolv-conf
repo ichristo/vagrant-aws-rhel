@@ -1,0 +1,9 @@
+domain osshive.io
+search osshive.io ec2.internal
+#AWS Route53 NameServers
+nameserver 205.251.197.143
+nameserver 205.251.193.124
+nameserver 205.251.194.131
+nameserver 205.251.198.66
+#Internal EC2 Server
+nameserver 172.16.0.23

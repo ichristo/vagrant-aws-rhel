@@ -2,3 +2,4 @@
 aws.yml
 .vagrant
 config/ssh
+vagrant_ansible_inventory*
