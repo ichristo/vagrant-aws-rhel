@@ -1,0 +1,37 @@
+--- 
+Description: This is the configuration file for the OpenShift Installer.
+Version: 0.0.1
+Subscription: 
+  rh_username: { RHN_ACCOUNT }			## PASS THIS IN FROM ANOTHER YML FILE?
+  type: rhn
+  rh_password: { RHN_PASSWORD }			## PASS THIS IN FROM ANOTHER YML FILE?
+Deployment: 
+  DNS: 
+    app_domain: paas.osshive.io
+    register_components: N
+  Hosts: 
+  - state: new
+    roles: 
+    - msgserver
+    - dbserver
+    - broker
+    ip_addr: { OSE-BROKER-01 EC2 PUBLIC IP }	## DNS LOOKUP AFTER INITIAL PROVISIONING?
+    ssh_host: ose-broker-01.osshive.io
+    user: ec2-user
+    host: ose-broker-01.osshive.io
+  - state: new
+    roles: 
+    - node
+    ip_addr: { OSE-NODE-01 EC2 PUBLIC IP }		## DNS LOOKUP AFTER INITIAL PROVISIONING?
+    ssh_host: ose-node-01.osshive.io
+    user: ec2-user
+    host: ose-node-01.osshive.io
+  - state: new
+    roles: 
+    - node
+    ip_addr: { OSE-NODE-02 EC2 PUBLIC IP }		## DNS LOOKUP AFTER INITIAL PROVISIONING?
+    ssh_host: ose-node-02.osshive.io
+    user: ec2-user
+    host: ose-node-02.osshive.io
+Name: OpenShift Installer Configuration
+Vendor: OpenShift Origin Community
