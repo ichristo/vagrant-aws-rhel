@@ -22,7 +22,7 @@ boxes = [
     :fqdn           =>  'ose-node-01.osshive.io',
     :private_ip     =>  '192.168.200.121',
     :primary        =>  'false',
-    :instance_type  =>  't1.micro',
+    :instance_type  =>  'm1.small',
     :elastic_ip     =>  false
   },
   { 
@@ -31,7 +31,7 @@ boxes = [
     :fqdn           =>  'ose-node-02.osshive.io',
     :private_ip     =>  '192.168.200.122',
     :primary        =>  'false',
-    :instance_type  =>  't1.micro',
+    :instance_type  =>  'm1.small',
     :elastic_ip     =>  false
   },
 
@@ -55,6 +55,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.vm.synced_folder '.', '/vagrant', :disabled => true
       config.vm.synced_folder 'config/ssh', '/vagrant/ssh-setup/'
       config.vm.synced_folder 'config/etc', '/vagrant/etc-setup/'
+
+      config.aws_extras.record_zone = "osshive.io."
+      config.aws_extras.record_name = box[:fqdn] 
+      config.aws_extras.record_type = "CNAME"
+      config.aws_extras.record_ttl  = "120"
       
       config.vm.provider :aws do |aws, override|
         override.ssh.private_key_path = pemfile
@@ -74,10 +79,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #        aws.private_ip_address        = box[:private_ip]
         aws.elastic_ip                = box[:elastic_ip]
 
-        override.aws_extras.record_zone = "osshive.io."
-        override.aws_extras.record_name = box[:fqdn] 
-        override.aws_extras.record_type = "CNAME"
-        override.aws_extras.record_ttl  = "120"
 
         aws.tags = { 'Name' => box[:name] }
       end
@@ -91,8 +92,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.vm.provision :shell, :privileged => false, :inline => "sudo cp -f /vagrant/etc-setup/etc-resolv-conf /etc/resolv.conf"
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/config /home/ec2-user/.ssh/"
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/RHEL-OSE-DEMO.pem /home/ec2-user/.ssh/"
-      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
       config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install screen"
+      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
       
       case box[:role]
       when "broker"
