@@ -9,6 +9,7 @@ end
 boxes = [
   { 
     :name           =>  'ose-broker-01',
+    :role           =>  'broker',
     :fqdn           =>  'ose-broker-01.osshive.io',
     :private_ip     =>  '192.168.200.101',
     :primary        =>  'true',
@@ -17,6 +18,7 @@ boxes = [
   },
   { 
     :name           =>  'ose-node-01',
+    :role           =>  'node',
     :fqdn           =>  'ose-node-01.osshive.io',
     :private_ip     =>  '192.168.200.121',
     :primary        =>  'false',
@@ -25,6 +27,7 @@ boxes = [
   },
   { 
     :name           =>  'ose-node-02',
+    :role           =>  'node',
     :fqdn           =>  'ose-node-02.osshive.io',
     :private_ip     =>  '192.168.200.122',
     :primary        =>  'false',
@@ -89,13 +92,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/config /home/ec2-user/.ssh/"
       config.vm.provision :shell, :privileged => false, :inline => "cp /vagrant/ssh-setup/RHEL-OSE-DEMO.pem /home/ec2-user/.ssh/"
       config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y update"
-      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install ruby unzip curl"
+      config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install screen"
+      
+      case box[:role]
+      when "broker"
+        config.vm.synced_folder 'config/openshift', '/vagrant/ose-setup/'
+        config.vm.provision :shell, :privileged => false, :inline => "sudo yum -y install ruby unzip curl"
+#        config.vm.provision :shell, :privileged => false, :inline => "sh <(curl -s https://install.openshift.com/ose-2.0) -c /vagrant/ose-setup/oo-install-cfg.yml -w enterprise_deploy"
+      when "node"
+        #Do Something        
+      end
 
-#      config.vm.provision :shell, :privileged => true, :inline => "echo 'domain osshive.io\nsearch osshive.io ec2.internal\nnameserver 205.251.197.143\nnameserver 172.16.0.23\n' > /etc/resolv.conf"
-#      config.vm.provision "ansible" do |ansible|
-#        ansible.playbook              = "provisioning/playbook.yml"
-#        ansible.inventory_path        = "provisioning/hosts"
-#      end
     end
   end
 end
