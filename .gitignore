@@ -1,5 +1,6 @@
 *.pem
 aws.yml
+rhn.yml
 .vagrant
 config/ssh
 vagrant_ansible_inventory*
