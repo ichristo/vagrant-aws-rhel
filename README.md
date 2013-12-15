@@ -12,6 +12,23 @@ Created by [Max Howell](http://mxcl.github.io/),
 [Homebrew](http://brew.sh/) is one of the package management options
 that we'll use for installing the necessary packages on OS X.  
 
+You can determine whether or not it is already installed with this:
+
+    $ which brew
+
+If you see something like the following then it is already installed:
+
+    /usr/local/bin/brew
+
+If you don't get any output then you probably do not have it installed or else
+it is not in your current PATH variable.
+
+
+If it is already installed and you want to check the version do this:
+
+    $ brew --version
+    0.9.5
+
 To install [Homebrew](http://brew.sh/), simple run the install script
 via curl and ruby:
 
