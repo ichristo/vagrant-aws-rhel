@@ -74,14 +74,12 @@ Casks, its as simple as this:
 
     $ brew cask install vagrant
     
-    ==> Downloading
-http://files.vagrantup.com/packages/a40522f5fabccb9ddabad03d836e12
+    ==> Downloading http://files.vagrantup.com/packages/a40522f5fabccb9ddabad03d836e12
     ==> Running installer for vagrant; your password may be necessary.
     ==> installer: Package name is Vagrant
     ==> installer: Upgrading at base path /
     ==> installer: The upgrade was successful.
-    ==> Success! vagrant installed to
-/opt/homebrew-cask/Caskroom/vagrant/1.3.5
+    ==> Success! vagrant installed to /opt/homebrew-cask/Caskroom/vagrant/1.3.5
     
     
     
