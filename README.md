@@ -15,8 +15,7 @@ that we'll use for installing the necessary packages on OS X.
 To install [Homebrew](http://brew.sh/), simple run the install script
 via curl and ruby:
 
-    ruby -e "$(curl -fsSL
-https://raw.github.com/mxcl/homebrew/go/install)"
+    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 
 The script explains what it will do and then pauses before it does it. 
 
